@@ -34,7 +34,7 @@ build/
 # -----------------------
 .env
 .env.*
-#appsettings.json
+appsettings.json
 
 # -----------------------
 # VS Code
