@@ -1205,3 +1205,33 @@ LIMIT @__p_2 OFFSET @__p_1
 2026-04-29 19:56:09.824 +05:30 [INF] HTTP GET /api/url/dashboard responded 200 in 2.8680 ms
 2026-04-29 19:56:09.824 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5266/api/url/dashboard?page=1&pageSize=10 - 200 null application/json; charset=utf-8 3.038ms
 2026-04-29 20:05:52.439 +05:30 [INF] Application is shutting down...
+2026-04-29 23:35:41.538 +05:30 [INF] Executed DbCommand (135ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2026-04-29 23:35:41.653 +05:30 [INF] Executed DbCommand (86ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-29 23:35:44.805 +05:30 [INF] Executed DbCommand (81ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2026-04-29 23:35:48.751 +05:30 [INF] Executed DbCommand (81ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2026-04-29 23:35:48.831 +05:30 [INF] Executed DbCommand (79ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-04-29 23:35:48.844 +05:30 [INF] No migrations were applied. The database is already up to date.
