@@ -1,0 +1,52 @@
+# -----------------------
+# .NET
+# -----------------------
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# EF Core
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# -----------------------
+# macOS
+# -----------------------
+.DS_Store
+
+# -----------------------
+# Node / Frontend
+# -----------------------
+node_modules/
+dist/
+build/
+.vite/
+
+# -----------------------
+# Environment / Secrets
+# -----------------------
+.env
+.env.*
+appsettings.json
+
+# -----------------------
+# VS Code
+# -----------------------
+.vscode/
+
+# -----------------------
+# Rider / JetBrains
+# -----------------------
+.idea/
+
+# -----------------------
+# Misc
+# -----------------------
+coverage/
