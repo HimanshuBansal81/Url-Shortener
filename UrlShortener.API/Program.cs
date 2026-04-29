@@ -100,13 +100,11 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
-}
+    
+var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseSerilogRequestLogging();
