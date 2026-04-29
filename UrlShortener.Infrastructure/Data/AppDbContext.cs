@@ -22,6 +22,9 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(user => user.Id);
 
+            entity.Property(user => user.Id)
+                .ValueGeneratedOnAdd();
+
             entity.Property(user => user.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -43,6 +46,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Url>(entity =>
             {
                 entity.HasKey(url => url.Id);
+
+                entity.Property(url => url.Id)
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(url => url.ShortCode)
                     .IsRequired()
@@ -71,6 +77,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<UrlClick>(entity =>
         {
             entity.HasKey(click => click.Id);
+
+            entity.Property(click => click.Id)
+                .ValueGeneratedOnAdd();
 
             entity.Property(click => click.ClickedAt)
                 .IsRequired();

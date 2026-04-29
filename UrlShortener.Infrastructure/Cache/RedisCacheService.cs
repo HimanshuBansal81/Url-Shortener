@@ -5,23 +5,34 @@ namespace UrlShortener.Infrastructure.Cache;
 
 public class RedisCacheService(IConnectionMultiplexer redis) : ICacheService
 {
-    private readonly IDatabase _db = redis.GetDatabase();
-
     public async Task<string?> GetAsync(string key)
     {
-        var value = await _db.StringGetAsync(key);
-        return value.HasValue ? value.ToString() : null;
+        try
+        {
+            var value = await redis.GetDatabase().StringGetAsync(key);
+            return value.HasValue ? value.ToString() : null;
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public async Task SetAsync(string key, string value, TimeSpan? expiry = null)
     {
-        if (expiry.HasValue)
+        try
         {
-            await _db.StringSetAsync(key, value, expiry.Value);
+            if (expiry.HasValue)
+            {
+                await redis.GetDatabase().StringSetAsync(key, value, expiry.Value);
+            }
+            else
+            {
+                await redis.GetDatabase().StringSetAsync(key, value);
+            }
         }
-        else
+        catch
         {
-            await _db.StringSetAsync(key, value);
         }
     }
 }

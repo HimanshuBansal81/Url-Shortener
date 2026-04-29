@@ -21,7 +21,9 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var redisConnection = configuration["Redis:ConnectionString"];
-        var connectionString = configuration.GetConnectionString("Default");
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? configuration.GetConnectionString("Default")
+            ?? throw new InvalidOperationException("Database connection string is missing.");
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
 
@@ -54,7 +56,12 @@ public static class DependencyInjection
         {
             try
             {
-                services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(redisConnection));
+                services.AddSingleton<IConnectionMultiplexer>(_ =>
+                {
+                    var options = ConfigurationOptions.Parse(redisConnection);
+                    options.AbortOnConnectFail = false;
+                    return ConnectionMultiplexer.Connect(options);
+                });
                 services.AddScoped<ICacheService, RedisCacheService>();
                 healthChecks.AddCheck<RedisHealthCheck>("redis", failureStatus: HealthStatus.Unhealthy);
             }
