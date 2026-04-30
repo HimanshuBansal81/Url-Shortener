@@ -9,7 +9,7 @@ namespace UrlShortener.API.Controllers;
 
 [ApiController]
 [Route("api/url")]
-public class UrlController(IUrlService urlService) : ControllerBase
+public class UrlController(IUrlService urlService, IConfiguration configuration) : ControllerBase
 {
     [HttpPost]
     [Authorize]
@@ -25,7 +25,9 @@ public class UrlController(IUrlService urlService) : ControllerBase
             request.CustomAlias,
             request.ExpiresAt,
             cancellationToken);
-        var shortUrl = $"{Request.Scheme}://{Request.Host}/{result.ShortCode}";
+
+        var shortUrl = BuildShortUrl(result.ShortCode);
+
         var response = new CreateShortUrlResponse(
             result.Id,
             result.UserId,
@@ -52,7 +54,7 @@ public class UrlController(IUrlService urlService) : ControllerBase
             results.Items.Select(result => new UserUrlResponse(
                 result.Id,
                 result.ShortCode,
-                $"{Request.Scheme}://{Request.Host}/{result.ShortCode}",
+                BuildShortUrl(result.ShortCode),
                 result.OriginalUrl,
                 result.ClickCount,
                 result.CreatedAt,
@@ -79,7 +81,7 @@ public class UrlController(IUrlService urlService) : ControllerBase
         return Ok(new ApiResponse<UrlAnalyticsResponse>(true, new UrlAnalyticsResponse(
             result.UrlId,
             result.ShortCode,
-            $"{Request.Scheme}://{Request.Host}/{result.ShortCode}",
+            BuildShortUrl(result.ShortCode),
             result.OriginalUrl,
             result.ClickCount,
             result.CreatedAt,
@@ -106,5 +108,17 @@ public class UrlController(IUrlService urlService) : ControllerBase
         }
 
         return userId;
+    }
+
+    private string BuildShortUrl(string shortCode)
+    {
+        var shortUrlBaseUrl = configuration["App:ShortUrlBaseUrl"]?.TrimEnd('/');
+
+        if (string.IsNullOrWhiteSpace(shortUrlBaseUrl))
+        {
+            shortUrlBaseUrl = $"{Request.Scheme}://{Request.Host}";
+        }
+
+        return $"{shortUrlBaseUrl}/{shortCode}";
     }
 }
